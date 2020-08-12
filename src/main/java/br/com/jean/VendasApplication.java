@@ -12,14 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class VendasApplication {
 
-    @Value("${application.name}")
-    private String appname;
 
-
-    @GetMapping("/hello")
-    public String hello(){
-        return appname;
-    }
 
     public static void main(String[] args) {
         SpringApplication.run(VendasApplication.class, args);
