@@ -33,6 +33,10 @@ public class VendasApplication {
             clienteReposiory.delete(c2.getId());
         clienteReposiory.delete(1);
            clienteReposiory.getByName("Jean");
+
+            System.out.println("deletados");
+            List<Cliente> todos1 = clienteReposiory.getAll();
+            todos.forEach(System.out::println);
         };
     }
 
