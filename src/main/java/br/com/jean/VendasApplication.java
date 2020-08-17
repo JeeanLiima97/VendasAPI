@@ -22,21 +22,9 @@ public class VendasApplication {
             cliente.setNome("Jean");
             clienteReposiory.save(cliente);
 
-
-            Cliente c2 = new Cliente();
-            c2.setNome("Teste");
-            clienteReposiory.save(c2);
-
-            List<Cliente> todos = clienteReposiory.getAll();
-            todos.forEach(System.out::println);
-
-            clienteReposiory.delete(c2.getId());
-        clienteReposiory.delete(1);
-           clienteReposiory.getByName("Jean");
-
-            System.out.println("deletados");
-            List<Cliente> todos1 = clienteReposiory.getAll();
-            todos.forEach(System.out::println);
+            System.out.println("Mostrando todos");
+            List<Cliente> clientes = clienteReposiory.findAll();
+            clientes.forEach(System.out::println);
         };
     }
 
