@@ -9,6 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @SpringBootApplication
 @RestController
 
@@ -28,6 +30,8 @@ public class VendasApplication {
             boolean exist = cli.existsClienteByNome("Jean");
             System.out.println("existe um cliente com nome Jean" + exist);
 
+            List<Cliente> todos = cli.encontrarPornome("Jean");
+            todos.forEach(System.out::println);
         };
     }
 
