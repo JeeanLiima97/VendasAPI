@@ -1,7 +1,7 @@
 package br.com.jean;
 
 import br.com.jean.domain.entity.Cliente;
-import br.com.jean.domain.repository.Clientes;
+import br.com.jean.domain.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,7 +21,7 @@ public class VendasApplication {
 
 
     @Bean
-    public CommandLineRunner init(@Autowired Clientes cli) {
+    public CommandLineRunner init(@Autowired ClienteRepository cli) {
         return args -> {
             Cliente cliente = new Cliente();
             cliente.setNome("Jean");
