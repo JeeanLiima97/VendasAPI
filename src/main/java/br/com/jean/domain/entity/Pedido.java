@@ -3,7 +3,9 @@ package br.com.jean.domain.entity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Pedido {
@@ -15,13 +17,14 @@ public class Pedido {
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
+
     private LocalDate dataPedido;
 
-    @Column(length = 20, precision = 2)
+    @Column(length = 20)
     private BigDecimal total;
 
     @OneToMany(mappedBy = "pedido")
-    private List<ItemPedido> itens;
+    private List<ItemPedido> itens = new ArrayList<>();
 
 
     public Integer getId() {
@@ -62,5 +65,14 @@ public class Pedido {
 
     public void setItens(List<ItemPedido> itens) {
         this.itens = itens;
+    }
+
+    @Override
+    public String toString() {
+        return "Pedido{" +
+                "id=" + id +
+                ", dataPedido=" + dataPedido +
+                ", total=" + total +
+                '}';
     }
 }

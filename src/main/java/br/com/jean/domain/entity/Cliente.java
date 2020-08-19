@@ -2,7 +2,9 @@ package br.com.jean.domain.entity;
 
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 public class Cliente {
@@ -13,7 +15,8 @@ public class Cliente {
     private String nome;
 
     @OneToMany(mappedBy = "cliente")
-    private Set<Pedido> pedidos;
+    private List<Pedido> pedidos = new ArrayList<Pedido>();
+
 
     public Cliente() {
     }
@@ -42,11 +45,11 @@ public class Cliente {
         this.nome = nome;
     }
 
-    public Set<Pedido> getPedidos() {
+    public List<Pedido> getPedidos() {
         return pedidos;
     }
 
-    public void setPedidos(Set<Pedido> pedidos) {
+    public void setPedidos(List<Pedido> pedidos) {
         this.pedidos = pedidos;
     }
 
