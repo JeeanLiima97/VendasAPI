@@ -16,6 +16,9 @@ public class Cliente {
     private Integer id;
     private String nome;
 
+    @Column(length = 11)
+    private String cpf;
+
     @JsonIgnore
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<Pedido>();
