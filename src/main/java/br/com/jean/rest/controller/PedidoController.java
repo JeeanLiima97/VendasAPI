@@ -47,6 +47,7 @@ public class PedidoController {
                 .data(pedido.getDataPedido().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
                 .nomeCliente(pedido.getCliente().getNome())
                 .total(pedido.getTotal())
+                .status(pedido.getStatus().name())
                 .itens(converter(pedido.getItens())).build();
 
     }
