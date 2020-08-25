@@ -17,5 +17,4 @@ public class PedidoDTO {
     private List<ItemPedidoDTO> itens;
 
 
-
 }

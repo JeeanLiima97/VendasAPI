@@ -3,6 +3,8 @@ package br.com.jean.rest.controller;
 
 import br.com.jean.domain.entity.ItemPedido;
 import br.com.jean.domain.entity.Pedido;
+import br.com.jean.domain.entity.enums.StatusPedido;
+import br.com.jean.rest.dto.AtualizacaoStatusPedidoDTO;
 import br.com.jean.rest.dto.InformacaoItemPedidoDTO;
 import br.com.jean.rest.dto.InformacoesPedidoDto;
 import br.com.jean.rest.dto.PedidoDTO;
@@ -37,8 +39,17 @@ public class PedidoController {
         return pedidoService.obterPedidoCompleto(id)
                 .map(pedido -> converter(pedido)
                 )
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não enontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado"));
     }
+
+    @PatchMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateStatus(@PathVariable Integer id,
+                             @RequestBody AtualizacaoStatusPedidoDTO dto) {
+        String novoStatus = dto.getNovoStatus();
+        pedidoService.atualizaStatus(id, StatusPedido.valueOf(novoStatus));
+    }
+
 
     private InformacoesPedidoDto converter(Pedido pedido) {
         return InformacoesPedidoDto.builder().
@@ -58,8 +69,8 @@ public class PedidoController {
             return Collections.emptyList();
         }
         return itens.stream().map(item -> InformacaoItemPedidoDTO.builder()
-        .descricaoProduto(item.getProduto().getDescricao())
-        .precoUnitario(item.getProduto().getPreco())
-        .quantidade(item.getQuantidade()).build()).collect(Collectors.toList());
+                .descricaoProduto(item.getProduto().getDescricao())
+                .precoUnitario(item.getProduto().getPreco())
+                .quantidade(item.getQuantidade()).build()).collect(Collectors.toList());
     }
 }

@@ -9,6 +9,7 @@ import br.com.jean.domain.repository.ClienteRepository;
 import br.com.jean.domain.repository.ItemPedidoRepository;
 import br.com.jean.domain.repository.PedidoRepository;
 import br.com.jean.domain.repository.ProdutoRepository;
+import br.com.jean.exception.PedidoNaoEncontradoException;
 import br.com.jean.exception.RegraNegocioException;
 import br.com.jean.rest.dto.ItemPedidoDTO;
 import br.com.jean.rest.dto.PedidoDTO;
@@ -58,7 +59,6 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
 
-
     private List<ItemPedido> converterItens(Pedido pedido, List<ItemPedidoDTO> itens) {
         if (itens.isEmpty()) {
             throw new RegraNegocioException("Não é possivel realizar o pedido sem itens");
@@ -83,5 +83,15 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public Optional<Pedido> obterPedidoCompleto(Integer id) {
         return pedidoRepository.findByIdFetchItens(id);
+    }
+
+    @Override
+    @Transactional
+    public void atualizaStatus(Integer id, StatusPedido statusPedido) {
+        pedidoRepository.findById(id)
+                .map(pedido -> {
+                    pedido.setStatus(statusPedido);
+                    return pedidoRepository.save(pedido);
+                }).orElseThrow(() -> new PedidoNaoEncontradoException());
     }
 }
