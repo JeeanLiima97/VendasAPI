@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -25,6 +26,7 @@ public class Cliente {
     private String nome;
 
     @Column(length = 11)
+    @CPF(message = "Favor, informe um CPF válido")
     private String cpf;
 
     @JsonIgnore
