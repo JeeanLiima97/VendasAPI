@@ -12,8 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
-    return new BCryptPasswordEncoder();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
 
     }
 
@@ -23,10 +23,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("teste")
                 .password(passwordEncoder().encode("123"))
                 .roles("USER");
+
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        super.configure(http);
+        http
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/api/clientes/***")
+                .authenticated()
+                .and()
+                .formLogin();
     }
 }
