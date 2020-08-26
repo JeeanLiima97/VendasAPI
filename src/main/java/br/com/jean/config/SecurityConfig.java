@@ -22,7 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication().passwordEncoder(passwordEncoder())
                 .withUser("teste")
                 .password(passwordEncoder().encode("123"))
-                .roles("USER");
+                .roles("USER","ADMIN");
 
     }
 
@@ -31,8 +31,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/clientes/***")
-                .authenticated()
+                .antMatchers("/api/clientes/**")
+                .hasAnyRole("ADMIN", "USER")
+                .antMatchers("/api/produtos/**")
+                .hasRole("ADMIN")
+                .antMatchers("/api/pedidos/**")
+                .hasAnyRole("ADMIN", "USER")
                 .and()
                 .formLogin();
     }
