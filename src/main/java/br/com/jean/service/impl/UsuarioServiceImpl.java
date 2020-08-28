@@ -1,5 +1,7 @@
 package br.com.jean.service.impl;
 
+import br.com.jean.domain.entity.Usuario;
+import br.com.jean.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UsuarioServiceImpl implements UserDetailsService {
@@ -14,19 +17,29 @@ public class UsuarioServiceImpl implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Transactional
+    public Usuario salvar(Usuario usuario){
+        return usuarioRepository.save(usuario);
+
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    if(!username.equals("Testando")){
-        throw new UsernameNotFoundException("Usuario nao encontrado");
-    }
+
+        Usuario usuario = usuarioRepository.findByLogin(username)
+                .orElseThrow(()-> new UsernameNotFoundException("Usuario não encontrado"));
+
+        String[] roles = usuario.isAdmin() ?
+                new String[]{"ADMIN","USER" } : new String[]{"USER"};
 
         return User
                 .builder()
-                .username("Testando")
-                .password(passwordEncoder.encode("123"))
-                .roles("USER", "ADMIN")
+                .username(usuario.getLogin())
+                .password(usuario.getPassword())
+                .roles(roles)
                 .build();
-
     }
 }
