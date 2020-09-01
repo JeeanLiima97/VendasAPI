@@ -2,6 +2,7 @@ package br.com.jean.service.impl;
 
 import br.com.jean.domain.entity.Usuario;
 import br.com.jean.domain.repository.UsuarioRepository;
+import br.com.jean.exception.SenhaInvalidaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,19 +22,28 @@ public class UsuarioServiceImpl implements UserDetailsService {
     private UsuarioRepository usuarioRepository;
 
     @Transactional
-    public Usuario salvar(Usuario usuario){
+    public Usuario salvar(Usuario usuario) {
         return usuarioRepository.save(usuario);
 
+    }
+
+    public UserDetails autenticar(Usuario usuario) {
+        UserDetails user = loadUserByUsername(usuario.getLogin());
+        boolean senhasBatem = passwordEncoder.matches(usuario.getPassword(), user.getPassword());
+        if (senhasBatem) {
+            return user;
+        }
+        throw new SenhaInvalidaException();
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         Usuario usuario = usuarioRepository.findByLogin(username)
-                .orElseThrow(()-> new UsernameNotFoundException("Usuario não encontrado"));
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario não encontrado"));
 
         String[] roles = usuario.isAdmin() ?
-                new String[]{"ADMIN","USER" } : new String[]{"USER"};
+                new String[]{"ADMIN", "USER"} : new String[]{"USER"};
 
         return User
                 .builder()
