@@ -1,5 +1,6 @@
-package br.com.jean;
+package br.com.jean.security.jwt;
 
+import br.com.jean.VendasApplication;
 import br.com.jean.domain.entity.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
